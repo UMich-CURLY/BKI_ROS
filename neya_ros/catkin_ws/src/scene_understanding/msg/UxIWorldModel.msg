@@ -1,0 +1,4 @@
+MapHeader mapheader
+Costmap costmap
+ElevationMap ground_elevation_map
+#ElevationMap max_elevation_map
