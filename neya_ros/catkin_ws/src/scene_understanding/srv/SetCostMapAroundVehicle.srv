@@ -1,6 +1,0 @@
-float32 height
-float32 width
-float32 cost
----
-bool success
-string message
