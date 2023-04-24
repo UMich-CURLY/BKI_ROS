@@ -19,6 +19,7 @@ We use LIO-SAM to preprocess poses - https://github.com/TixiaoShan/LIO-SAM
 Use the following commands to download and compile the package.
 
 ```
+git clone https://github.com/UMich-CURLY/BKI_ROS.git
 mv ~/BKI_ROS/lio-sam/liorf ~/catkin_ws/src
 cd ~/catkin_ws
 catkin_make
