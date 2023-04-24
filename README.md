@@ -19,7 +19,7 @@ We use LIO-SAM to preprocess poses - https://github.com/TixiaoShan/LIO-SAM
 Use the following commands to download and compile the package.
 
 ```
-mv ~/NuScenesConvBKI/lio-sam/liorf ~/catkin_ws/src
+mv ~/BKI_ROS/lio-sam/liorf ~/catkin_ws/src
 cd ~/catkin_ws
 catkin_make
 ```
