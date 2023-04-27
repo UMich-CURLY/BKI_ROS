@@ -1,0 +1,45 @@
+# ROS bag Topics
+pc_topic: '/map_pointcloud'
+pose_topic: '/map_pose' 
+
+
+num_classes: 19
+
+# Conv BKI
+grid_size: [256, 256, 32]
+min_bound: [-25.6, -25.6, -4.2]
+max_bound: [25.6, 25.6, 2.2]
+voxel_sizes: [0.2, 0.2, 0.2]
+f: 5
+
+# Segmentation Net
+res: 0.05
+cr: 0.5
+
+# Segmentation weights
+seg_path: "./weights/Rellis/max-iou-test.pt"
+
+# ConvBKI weights
+model_path: "./weights/Rellis/Epoch0.pt"
+
+# rviz color
+colors:
+  0: [ 108, 64, 20 ]
+  1: [ 0, 102, 0 ]
+  2: [ 200, 200, 0 ]
+  3: [ 0, 153, 153 ]
+  4: [ 0, 128, 200 ]
+  5: [ 50, 0, 100 ]
+  6: [ 100, 100, 0 ]
+  7: [ 200, 0, 127 ]
+  8: [ 64, 64, 64 ]
+  9: [ 0, 200, 0 ]
+  10: [ 102, 0, 0 ]
+  11: [ 204, 153, 254 ]
+  12: [ 102, 0, 204 ]
+  13: [ 200, 153, 204 ]
+  14: [ 170, 170, 170 ]
+  15: [ 41, 121, 254 ]
+  16: [ 134, 254, 239 ]
+  17: [ 99, 66, 34 ]
+  18: [ 110, 22, 138 ]
