@@ -76,6 +76,8 @@ For a more detailed setup guide to LIO-SAM, please see https://github.com/Tixiao
 
 ## Mapping with rosbag
 
+#### Run mapping
+
 You can run the mapping module which will create a ros publisher that publish the map and can be visualized on rviz.
 
 1. Run ros_node.py:
@@ -88,9 +90,10 @@ python ros_node.py
 rosbag play your-bag.bag
 ```
 
+#### YAML Parameters
+
 Parameters can be set in the yaml config file, and it can be found in EndtoEnd/Configs
 
-#### YAML Parameters
 * pc_topic - the name of the pointcloud topic to subscribe to
 * pose_topic - the name of the pose topic to subscribe to
 * num_classes - number of semantic classes
@@ -100,6 +103,8 @@ Parameters can be set in the yaml config file, and it can be found in EndtoEnd/C
 * res, cr - parameters for SPVNAS segmentation net
 * seg_path - saved weights for SPVNAS segmentation net
 * model_path - saved weights for convbki layer
+
+#### Model Weights
 
 Weights for SPVNAS segmentation network and convbki layer are located in EndtoEnd/weights, currently the weights are trained on [Rellis3D dataset](https://github.com/unmannedlab/RELLIS-3D). If you have other pretrained weights, you should store them here and change the seg_path and model_path in the config file accordingly. 
 
