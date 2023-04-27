@@ -3,7 +3,7 @@ liorf:
   # Topics
   pointCloudTopic: "/mrzr/perception/lidar/front/point_cloud"    # Point cloud data
   imuTopic: "/mrzr/localization/imu/imu"              # IMU data
-  odomTopic: "odometry/imu"                   # IMU pre-preintegration odometry, same frequency as IMU
+  odomTopic: "/mrzr/localization/imu/odom"                   # IMU pre-preintegration odometry, same frequency as IMU
   gpsTopic: "odometry/gpsz"                   # GPS odometry topic from navsat, see module_navsat.launch file
 
   # Frames
@@ -13,13 +13,13 @@ liorf:
   mapFrame: "map"
 
   # GPS Settings
-  useImuHeadingInitialization: true           # if using GPS data, set to "true"
+  useImuHeadingInitialization: false           # if using GPS data, set to "true"
   useGpsElevation: false                      # if GPS elevation is bad, set to "false"
   gpsCovThreshold: 2.0                        # m^2, threshold for using GPS data
   poseCovThreshold: 25.0                      # m^2, threshold for using GPS data
   
   # Export settings
-  savePCD: true                              # https://github.com/TixiaoShan/LIO-SAM/issues/3
+  savePCD: false                              # https://github.com/TixiaoShan/LIO-SAM/issues/3
 
   # Sensor Settings
   sensor: ouster                            # lidar sensor type, 'velodyne' or 'ouster' or 'livox' or 'robosense'
@@ -42,8 +42,9 @@ liorf:
 
   # Extrinsics: T_lb (lidar -> imu)
   extrinsicTrans: [0.0, 0.0, 0.0]
-  extrinsicRot: [1, 0, 0,
-                  0, 1, 0,
+
+  extrinsicRot: [0, -1, 0,
+                  1, 0, 0,
                   0, 0, 1]
 
   # This parameter is set only when the 9-axis IMU is used, but it must be a high-precision IMU. e.g. MTI-680
@@ -63,9 +64,9 @@ liorf:
   mappingProcessInterval: 0.0                  # seconds, regulate mapping frequency
 
   # Surrounding map
-  surroundingkeyframeAddingDistThreshold: 0.1   # meters, regulate keyframe adding threshold
-  surroundingkeyframeAddingAngleThreshold: 0.02  # radians, regulate keyframe adding threshold
-  surroundingKeyframeDensity: 2.0               # meters, downsample surrounding keyframe poses   
+  surroundingkeyframeAddingDistThreshold: 0.05   # meters, regulate keyframe adding threshold
+  surroundingkeyframeAddingAngleThreshold: 0.01  # radians, regulate keyframe adding threshold
+  surroundingKeyframeDensity: 0.5               # meters, downsample surrounding keyframe poses   
   surroundingKeyframeSearchRadius: 50.0         # meters, within n meters scan-to-map optimization (when loop closure disabled)
   surroundingKeyframeMapLeafSize: 0.5           # downsample local map point cloud
 
