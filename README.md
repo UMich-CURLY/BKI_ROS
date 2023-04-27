@@ -14,6 +14,11 @@ We use LIO-SAM to preprocess poses - https://github.com/TixiaoShan/LIO-SAM
   sudo add-apt-repository ppa:borglab/gtsam-release-4.0
   sudo apt install libgtsam-dev libgtsam-unstable-dev
   ```
+- [TorchSparse](https://github.com/mit-han-lab/torchsparse) (for SPVNAS segmentation network)
+  ```
+  sudo apt-get install libsparsehash-dev
+  ```
+  
 ## Install
 
 Use the following commands to download and compile the package.
@@ -24,6 +29,13 @@ mv ~/BKI_ROS/lio-sam/liorf ~/catkin_ws/src
 cd ~/catkin_ws
 catkin_make
 ```
+
+We also provide an environment.yml which you can use to create a conda environment (This is only tested on Ubuntu 20)
+```
+conda env create -f environment.yml
+conda activate bkiros
+```
+
 ## Prepare lidar data
 
 The user needs to prepare the point cloud data in the correct format for cloud deskewing, which is mainly done in "imageProjection.cpp". The two requirements are:
