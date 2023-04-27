@@ -1,4 +1,4 @@
-# Preprocess Poses
+## Preprocess Poses
 We use LIO-SAM to preprocess poses - https://github.com/TixiaoShan/LIO-SAM
 
 ## Dependency
@@ -73,3 +73,21 @@ rosservice call /liorf/save_map "{}"
  
 
 For a more detailed setup guide to LIO-SAM, please see https://github.com/TixiaoShan/LIO-SAM and https://github.com/YJZLuckyBoy/liorf
+
+## Mapping with rosbag
+
+The yaml file can be found in EndtoEnd/Configs
+
+#### YAML Parameters
+* pc_topic - the name of the pointcloud topic to subscribe to
+* pose_topic - the name of the pose topic to subscribe to
+* num_classes - number of semantic classes
+
+* grid_size, min_bound, max_bound, voxel_sizes - parameters for convbki layer
+* f - convbki layer kernel size
+* res, cr - parameters for SPVNAS segmentation net
+* seg_path - saved weights for SPVNAS segmentation net
+* model_path - saved weights for convbki layer
+
+
+
