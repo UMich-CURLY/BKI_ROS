@@ -101,6 +101,6 @@ Parameters can be set in the yaml config file, and it can be found in EndtoEnd/C
 * seg_path - saved weights for SPVNAS segmentation net
 * model_path - saved weights for convbki layer
 
-Weights for SPVNAS segmentation network and convbki layer are located in EndtoEnd/weights, currently the weights are trained on ([Rellis3D dataset](https://github.com/unmannedlab/RELLIS-3D)). If you have other pretrained weights, you should store them here and change the seg_path and model_path in the config file accordingly. 
+Weights for SPVNAS segmentation network and convbki layer are located in EndtoEnd/weights, currently the weights are trained on [Rellis3D dataset](https://github.com/unmannedlab/RELLIS-3D). If you have other pretrained weights, you should store them here and change the seg_path and model_path in the config file accordingly. 
 
 
