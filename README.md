@@ -32,6 +32,7 @@ catkin_make
 
 We also provide an environment.yml which you can use to create a conda environment (This is only tested on Ubuntu 20)
 ```
+cd ~/BKI_ROS/EndToEnd
 conda env create -f environment.yml
 conda activate bkiros
 ```
