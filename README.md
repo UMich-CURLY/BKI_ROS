@@ -77,9 +77,15 @@ For a more detailed setup guide to LIO-SAM, please see https://github.com/Tixiao
 ## Mapping with rosbag
 
 You can run the mapping module which will create a ros publisher that publish the map and can be visualized on rviz.
+
+1. Run ros_node.py:
 ```
 cd ~/BKI_ROS/EndToEnd
 python ros_node.py
+```
+2. Play processed rosbag:
+```
+rosbag play your-bag.bag
 ```
 
 Parameters can be set in the yaml config file, and it can be found in EndtoEnd/Configs
