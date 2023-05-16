@@ -3,12 +3,12 @@ pc_topic: '/map_pointcloud'
 pose_topic: '/map_pose' 
 
 
-num_classes: 19
+num_classes: 15
 
 # Conv BKI
-grid_size: [256, 256, 32]
-min_bound: [-25.6, -25.6, -4.2]
-max_bound: [25.6, 25.6, 2.2]
+grid_size: [512, 512, 48]
+min_bound: [-51.2, -51.2, -6.4]
+max_bound: [51.2, 51.2, 2.8]
 voxel_sizes: [0.2, 0.2, 0.2]
 f: 5
 
@@ -20,26 +20,22 @@ cr: 0.5
 seg_path: "./weights/Rellis/max-iou-test.pt"
 
 # ConvBKI weights
-model_path: "./weights/Rellis/Epoch0.pt"
+model_path: "./weights/Rellis/Epoch1.pt"
 
 # rviz color
 colors:
-  0: [ 108, 64, 20 ]
-  1: [ 0, 102, 0 ]
-  2: [ 200, 200, 0 ]
-  3: [ 0, 153, 153 ]
-  4: [ 0, 128, 200 ]
-  5: [ 50, 0, 100 ]
-  6: [ 100, 100, 0 ]
-  7: [ 200, 0, 127 ]
-  8: [ 64, 64, 64 ]
-  9: [ 0, 200, 0 ]
-  10: [ 102, 0, 0 ]
-  11: [ 204, 153, 254 ]
-  12: [ 102, 0, 204 ]
-  13: [ 200, 153, 204 ]
-  14: [ 170, 170, 170 ]
-  15: [ 41, 121, 254 ]
-  16: [ 134, 254, 239 ]
-  17: [ 99, 66, 34 ]
-  18: [ 110, 22, 138 ]
+  0: [ 108, 64, 20 ] # Dirt
+  1: [ 0, 102, 0 ] # Grass
+  2: [ 200, 200, 0 ] # Tree
+  3: [ 0, 153, 153 ] # Pole
+  4: [ 0, 128, 200 ] # Water
+  5: [ 50, 0, 100 ] # Vehicle
+  6: [ 100, 100, 0 ] # Log
+  7: [ 200, 0, 127 ] # Person
+  8: [ 64, 64, 64 ] # Fence
+  9: [ 0, 200, 0 ] # Bush
+  10: [ 102, 0, 0 ] # Concrete
+  11: [ 204, 153, 254 ] # Barrier
+  12: [ 102, 0, 204 ] # Puddle
+  13: [ 200, 153, 204 ] # Mud
+  14: [ 170, 170, 170 ] # Rubble

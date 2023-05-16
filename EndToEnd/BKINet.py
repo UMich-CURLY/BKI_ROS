@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 
 # BKINet consists of three components:
 # 1) Semantic segmentation model
@@ -42,6 +43,6 @@ class BKINet(torch.nn.Module):
         transformed_lidar = torch.matmul(self.ego_to_map[:3, :3], lidar[:, :3].T).T + self.ego_to_map[:3, 3]
 
         # Update
-        point_labels = self.segmentation_net(seg_input)[inv_map]
+        point_labels = F.softmax(self.segmentation_net(seg_input)[inv_map])
         segmented_points = torch.concat((transformed_lidar[:, :3], point_labels), dim=1)
         self.grid = self.convbki_net(self.grid, segmented_points)
