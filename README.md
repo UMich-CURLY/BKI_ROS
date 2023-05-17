@@ -1,3 +1,4 @@
+![Alt Text](./video.gif)
 ## Preprocess Poses
 We use LIO-SAM to preprocess poses - https://github.com/TixiaoShan/LIO-SAM
 
