@@ -12,14 +12,23 @@ from geometry_msgs.msg import PoseStamped
 from tf.transformations import quaternion_matrix
 import message_filters
 
+
 class lidar_poses_subscriber:
 
-    def __init__(self, pc_topic, pose_topic, res, e2e_net, dev, dtype, next_map, map_pub, voxel_sizes, color):
+    def __init__(self, pc_topic, pose_topic, res, e2e_net, dev,
+                 dtype, voxel_sizes, color, publish=False):
 
         print("Initializing the instance!")
 
         # initialize the subscriber node now.
         # here we deal with messages of type pointcloud 2 and poses2
+        self.map_pub = rospy.Publisher('SemMap_global', MarkerArray, queue_size=10)
+        self.next_map = MarkerArray()
+        self.var_pub = rospy.Publisher('VarMap_global', MarkerArray, queue_size=10)
+        self.var_map = MarkerArray()
+        self.frame_count = 0
+        self.publish = publish
+
         self.pc_sub = message_filters.Subscriber(pc_topic, 
                                           PointCloud2)
         self.poses_sub = message_filters.Subscriber(pose_topic, 
@@ -35,12 +44,9 @@ class lidar_poses_subscriber:
         self.e2e_net = e2e_net
         self.dev = dev
         self.dtype = dtype
-        self.next_map = next_map
-        self.map_pub = map_pub
         self.voxel_sizes = voxel_sizes
         self.color = color
         print("Subscribed to pointcloud topic: {}, pose topic: {}".format(pc_topic, pose_topic))
-
 
     def callback(self, pc_sub, poses_sub):
 
@@ -60,11 +66,17 @@ class lidar_poses_subscriber:
             input_data = [torch.tensor(self.lidar_pose).to(self.dev).type(self.dtype), torch.tensor(self.lidar).to(self.dev).type(self.dtype),
                             self.seg_input, torch.tensor(self.inv).to(self.dev)]
 
+            start_t = time.time()
             self.e2e_net(input_data)
+            end_t = time.time()
+            print("Inference completed in %.2f seconds" % (end_t - start_t))
 
-            self.next_map = publish_local_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, self.next_map, self.e2e_net.propagation_net.translation)
+            if self.publish:
+                self.next_map = publish_local_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, self.next_map, self.e2e_net.propagation_net.translation)
+                self.map_pub.publish(self.next_map)
 
-            self.map_pub.publish(self.next_map)
+                self.var_map = publish_var_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, self.var_map, self.e2e_net.propagation_net.translation)
+                self.var_pub.publish(self.var_map)
 
 
   
@@ -79,22 +91,17 @@ def main():
         except yaml.YAMLError as exc:
             print(exc)
 
-
     dev = 'cuda' if torch.cuda.is_available() else 'cpu'
     dtype = torch.float32
 
     e2e_net = load_model(model_params, dev)
 
-    # Publish voxels
-    map_pub = rospy.Publisher('SemMap_global', MarkerArray, queue_size=10)
-    next_map = MarkerArray()
-
     # Subscribe 
-    sub = lidar_poses_subscriber(model_params["pc_topic"], model_params["pose_topic"], model_params["res"], e2e_net, dev, dtype, next_map, map_pub, model_params["voxel_sizes"], model_params["colors"])
+    sub = lidar_poses_subscriber(model_params["pc_topic"], model_params["pose_topic"], model_params["res"], e2e_net, dev,
+                                 dtype, model_params["voxel_sizes"], model_params["colors"], publish=model_params["publish"])
     rospy.init_node('listener', anonymous=True)
 
     rospy.spin()
-
 
 
 if __name__ == '__main__':

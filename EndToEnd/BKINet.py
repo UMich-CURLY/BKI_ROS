@@ -37,6 +37,7 @@ class BKINet(torch.nn.Module):
         List of input for [propagation, segmentation]
         '''
         new_pose, lidar, seg_input, inv_map = input_data
+        print(lidar.shape)
 
         # Propagate
         self.ego_to_map, self.grid = self.propagation_net(new_pose, self.grid)
