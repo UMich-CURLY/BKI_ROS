@@ -1,0 +1,33 @@
+seed : 42
+
+x_dim: 256
+y_dim: 256
+z_dim: 64
+
+T: 10
+f: 5
+
+remap: False
+
+model_name: "ConvBKIKITTI"
+num_workers: 10
+epoch_num: 15
+B: 2
+argmax: False
+
+# Learning
+lr: 0.007
+BETA1: 0.9
+BETA2: 0.999
+DECAY: 0.96
+
+# Segmentation
+cr: 0.5
+pres: 0.05
+vres: 0.05
+weights_path: "/home/tigeriv/Code/NuScenesConvBKI/spvnas/runs/Carla/checkpoints/max-iou-test.pt"
+
+# For generating BEV
+MIN_THRESH: 0.1
+model_path: "/home/tigeriv/Code/NuScenesConvBKI/Baselines/Models/Weights/ConvBKI_Train/Epoch1.pt"
+T_test: 50

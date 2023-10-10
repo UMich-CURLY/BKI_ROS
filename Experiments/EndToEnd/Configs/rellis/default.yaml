@@ -1,0 +1,18 @@
+root: '/home/tigeriv/Data/Rellis-3D/Val'
+
+colors:
+  0: [ 108, 64, 20 ] # Dirt
+  1: [ 0, 200, 0 ] # Grass
+  2: [ 100, 150, 100 ] # Tree
+  3: [ 0, 153, 153 ] # Pole
+  4: [ 0, 0, 250 ] # Water
+  5: [ 255, 255, 0 ] # Vehicle
+  6: [ 102, 0, 0 ] # Log
+  7: [ 20, 20, 100 ] # Person
+  8: [ 110, 22, 22 ] # Fence
+  9: [ 40, 120, 20 ] # Bush
+  10: [ 110, 22, 22 ] # Concrete
+  11: [ 110, 22, 22 ] # Barrier
+  12: [ 0, 0, 250 ] # Puddle
+  13: [ 99, 66, 34 ] # Mud
+  14: [ 110, 22, 22 ] # Rubble

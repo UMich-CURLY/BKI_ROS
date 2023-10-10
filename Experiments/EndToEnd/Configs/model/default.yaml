@@ -1,0 +1,13 @@
+num_classes: 13
+
+# Conv BKI
+grid_size: [200, 200, 20]
+min_bound: [-25, -25, -3.5]
+max_bound: [25, 25, 1.5]
+voxel_sizes: [0.25, 0.25, 0.25]
+f: 5
+
+# Segmentation Net
+res: 0.05
+cr: 0.5
+seg_path: "/home/tigeriv/Code/NuScenesConvBKI/spvnas/runs/Downsampled/checkpoints/max-iou-test.pt"

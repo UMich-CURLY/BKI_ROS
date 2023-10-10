@@ -1,0 +1,43 @@
+x_dim: 256
+y_dim: 256
+z_dim: 16
+
+binary_counts: True
+transform_pose: True
+
+num_workers: 10
+train_dir: "/home/tigeriv/Data/Carla/Cartesian/Train"
+val_dir: "/home/tigeriv/Data/Carla/Cartesian/Val"
+test_dir: "/home/tigeriv/Data/Carla/Cartesian/Test"
+remap: False
+
+num_classes: 11
+ignore_class: 0
+
+min_bound: [-25.600000381469727, -25.600000381469727, -2.0]
+max_bound: [25.600000381469727, 25.600000381469727, 1.0]
+
+counts: [0,
+        3.51833310e+07,
+        2.96952250e+07,
+        1.62906910e+07,
+        9.44402000e+05,
+        1.97334900e+06,
+        9.99634836e+08,
+        4.12520478e+08,
+        5.11734847e+08,
+        5.24373460e+07,
+        2.65978390e+07]
+
+colors: # bgr
+        0: [0, 0, 0]
+        1: [245, 245, 245]
+        2: [100, 230, 245]
+        3: [30, 60, 150]
+        4: [80, 30, 180]
+        5: [100, 80, 255]
+        6: [255, 30, 30]
+        7: [255, 40, 200]
+        8: [150, 30, 90]
+        9: [255, 0, 255]
+        10: [255, 150, 255]

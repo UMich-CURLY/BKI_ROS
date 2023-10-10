@@ -1,0 +1,28 @@
+seed : 42
+
+T: 10
+
+model_name: "SMNetLinear"
+mem_type: "linear"
+num_workers: 8
+epoch_num: 15
+B: 2
+ego_feat_dim: 48 # Dimension of SPVNAS features
+mem_feat_dim: 256 # Dimension of GRU
+ego_downsample: False
+
+# Learning
+lr: 0.0001
+momentum: 0.9
+decay: 0.0004
+decayRate: 0.992
+
+# Segmentation
+cr: 0.5
+pres: 0.05
+vres: 0.05
+weights_path: "/home/tigeriv/Code/NuScenesConvBKI/spvnas/runs/Carla/checkpoints/max-iou-test.pt"
+
+# For inference
+model_path: "/home/tigeriv/Code/NuScenesConvBKI/Baselines/Models/Weights/SMNetLinear/Epoch0.pt"
+T_test: 20

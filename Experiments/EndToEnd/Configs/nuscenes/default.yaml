@@ -1,0 +1,70 @@
+labels_remap: {
+    "noise": 0,  # Outlier
+    "animal": 0,  # Outlier
+    "human.pedestrian.adult": 1,  # Human
+    "human.pedestrian.child": 1,  # Human
+    "human.pedestrian.construction_worker": 1,  # Human
+    "human.pedestrian.personal_mobility": 1,  # Human
+    "human.pedestrian.police_officer": 1,  # Human
+    "human.pedestrian.stroller": 1,  # Human
+    "human.pedestrian.wheelchair": 1,  # Human,
+    "movable_object.barrier": 2,  # Static structure
+    "movable_object.debris": 2,  # Static structure
+    "movable_object.pushable_pullable": 2,  # Static structure
+    "movable_object.trafficcone": 2,  # Static structure
+    "static_object.bicycle_rack": 2,  # Static structure
+    "vehicle.bicycle": 3,  # Bicycle
+    "vehicle.bus.bendy": 4,  # Other vehicle
+    "vehicle.bus.rigid": 4,  # Other vehicle
+    "vehicle.car": 5,  # Car
+    "vehicle.construction": 4,  # Other vehicle
+    "vehicle.emergency.ambulance": 4,  # Other vehicle
+    "vehicle.emergency.police": 4,  # Other vehicle
+    "vehicle.motorcycle": 6,  # Motorcycle
+    "vehicle.trailer": 4,  # Other vehicle
+    "vehicle.truck": 7,  # Truck
+    "flat.driveable_surface": 8,  # Road
+    "flat.other": 9,  # Other ground
+    "flat.sidewalk": 10,  # Sidewalk
+    "flat.terrain": 11,  # Terrain
+    "static.manmade": 2,  # Static structure
+    "static.other": 2,  # Static structure
+    "static.vegetation": 12,  # Nature
+    "vehicle.ego": 0,  # Outlier
+}
+
+kept_labels: ['noise', 'animal', 'human.pedestrian.adult', 'human.pedestrian.child',
+               'human.pedestrian.construction_worker', 'human.pedestrian.personal_mobility',
+               'human.pedestrian.police_officer', 'human.pedestrian.stroller', 'human.pedestrian.wheelchair',
+               'movable_object.barrier', 'movable_object.debris', 'movable_object.pushable_pullable',
+               'movable_object.trafficcone', 'static_object.bicycle_rack', 'vehicle.bicycle', 'vehicle.bus.bendy',
+               'vehicle.bus.rigid', 'vehicle.car', 'vehicle.construction', 'vehicle.emergency.ambulance',
+               'vehicle.emergency.police', 'vehicle.motorcycle', 'vehicle.trailer', 'vehicle.truck',
+               'flat.driveable_surface', 'flat.other', 'flat.sidewalk', 'flat.terrain', 'static.manmade',
+               'static.other', 'static.vegetation', 'vehicle.ego']
+
+num_frames: 10
+
+root: '/home/tigeriv/Data/nuscenes_mnet'
+
+colors: # bgr
+  0: [0, 0, 0]
+  1: [245, 245, 245]
+  2: [100, 230, 245]
+  3: [30, 60, 150]
+  4: [80, 30, 180]
+  5: [100, 80, 255]
+  6: [255, 30, 30]
+  7: [255, 40, 200]
+  8: [150, 30, 90]
+  9: [255, 0, 255]
+  10: [255, 150, 255]
+  11: [75, 0, 75]
+  12: [175, 0, 75]
+  13: [255, 200, 0]
+  14: [255, 120, 50]
+  15: [0, 175, 0]
+  16: [135, 60, 0]
+  17: [150, 240, 80]
+  18: [255, 240, 150]
+  19: [255, 0, 0]
