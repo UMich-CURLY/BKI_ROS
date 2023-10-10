@@ -1,15 +1,16 @@
 # ROS bag Topics
 pc_topic: '/map_pointcloud'
-pose_topic: '/map_pose' 
+pose_topic: '/map_pose'
+publish: True
 
 
 num_classes: 15
 
 # Conv BKI
-grid_size: [512, 512, 48]
-min_bound: [-51.2, -51.2, -6.4]
-max_bound: [51.2, 51.2, 3.4]
-voxel_sizes: [0.2, 0.2, 0.2]
+grid_size: [800, 800, 84]
+min_bound: [-40.0, -40.0, -4.2]
+max_bound: [40.0, 40.0, 4.2]
+voxel_sizes: [0.1, 0.1, 0.095]
 f: 5
 
 # Segmentation Net
@@ -25,17 +26,17 @@ model_path: "./weights/Rellis/Epoch1.pt"
 # rviz color
 colors:
   0: [ 108, 64, 20 ] # Dirt
-  1: [ 0, 102, 0 ] # Grass
-  2: [ 200, 200, 0 ] # Tree
+  1: [ 0, 200, 0 ] # Grass
+  2: [ 100, 150, 100 ] # Tree
   3: [ 0, 153, 153 ] # Pole
-  4: [ 0, 128, 200 ] # Water
-  5: [ 50, 0, 100 ] # Vehicle
-  6: [ 100, 100, 0 ] # Log
-  7: [ 200, 0, 127 ] # Person
-  8: [ 64, 64, 64 ] # Fence
-  9: [ 0, 200, 0 ] # Bush
-  10: [ 102, 0, 0 ] # Concrete
-  11: [ 204, 153, 254 ] # Barrier
-  12: [ 102, 0, 204 ] # Puddle
-  13: [ 200, 153, 204 ] # Mud
-  14: [ 170, 170, 170 ] # Rubble
+  4: [ 0, 0, 250 ] # Water
+  5: [ 255, 255, 0 ] # Vehicle
+  6: [ 102, 0, 0 ] # Log
+  7: [ 20, 20, 100 ] # Person
+  8: [ 110, 22, 22 ] # Fence
+  9: [ 40, 120, 20 ] # Bush
+  10: [ 110, 22, 22 ] # Concrete
+  11: [ 110, 22, 22 ] # Barrier
+  12: [ 0, 0, 250 ] # Puddle
+  13: [ 99, 66, 34 ] # Mud
+  14: [ 110, 22, 22 ] # Rubble
