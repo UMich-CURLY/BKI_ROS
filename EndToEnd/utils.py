@@ -97,9 +97,9 @@ def publish_local_map(labeled_grid, centroids, voxel_dims, colors, next_map, tra
         point.y = centroids[i, 1]
         point.z = centroids[i, 2]
         color.r, color.g, color.b = colors[pred]
-        color.r = color.r / 255
-        color.g = color.g / 255
-        color.b = color.b / 255
+        color.r = color.r / 255.
+        color.g = color.g / 255.
+        color.b = color.b / 255.
 
         color.a = 1.0
         marker.points.append(point)
