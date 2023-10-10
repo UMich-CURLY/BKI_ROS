@@ -1,0 +1,38 @@
+# ROS bag Topics
+pc_topic: '/map_pointcloud'
+pose_topic: '/map_pose'
+publish: True
+
+
+num_classes: 11
+
+# Conv BKI
+grid_size: [512, 512, 32]
+min_bound: [-51.2, -51.2, -4.2]
+max_bound: [51.2, 51.2, 2.0]
+voxel_sizes: [0.2, 0.2, 0.1875]
+f: 5
+
+# Segmentation Net
+res: 0.05
+cr: 0.5
+
+# Segmentation weights
+seg_path: "./weights/KITTI/max-iou-test.pt"
+
+# ConvBKI weights
+model_path: "./weights/KITTI/Epoch1.pt"
+
+# rviz color
+colors: # rgb
+        0: [0, 0, 0]
+        1: [100, 50, 50] # Building
+        2: [100, 230, 245] # Barrier
+        3: [30, 60, 150]
+        4: [80, 30, 180] # Pedestrian
+        5: [200, 80, 100] # Pole
+        6: [50, 150, 50] # Road
+        7: [200, 40, 200] # Ground
+        8: [150, 150, 150] # Sidewalk
+        9: [0, 100, 0] # Vegetation
+        10: [150, 30, 90] # Vehicle

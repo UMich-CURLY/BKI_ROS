@@ -81,7 +81,7 @@ class lidar_poses_subscriber:
 
   
 def main():
-    MODEL_CONFIG = "Rellis"
+    MODEL_CONFIG = "KITTI"
 
     # Model Parameters
     model_params_file = os.path.join(os.getcwd(), "Configs", MODEL_CONFIG + ".yaml")

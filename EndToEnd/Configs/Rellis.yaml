@@ -1,15 +1,16 @@
 # ROS bag Topics
 pc_topic: '/map_pointcloud'
-pose_topic: '/map_pose' 
+pose_topic: '/map_pose'
+publish: False
 
 
 num_classes: 15
 
 # Conv BKI
-grid_size: [600, 600, 100]
+grid_size: [300, 300, 50]
 min_bound: [-30.0, -30.0, -4]
 max_bound: [30.0, 30.0, 6]
-voxel_sizes: [0.1, 0.1, 0.1]
+voxel_sizes: [0.2, 0.2, 0.2]
 f: 5
 
 # Segmentation Net

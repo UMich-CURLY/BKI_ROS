@@ -12,12 +12,22 @@ from visualization_msgs.msg import MarkerArray, Marker
 
 def load_model(model_params, dev):
     # Segmentation network
-    seg_net = SPVCNN(
-        num_classes=model_params["num_classes"],
-        cr=model_params["cr"],
-        pres=model_params["res"],
-        vres=model_params["res"]).to(dev)
-    seg_net.load_state_dict(torch.load(model_params["seg_path"])['model'])
+
+    # KITTI
+    if model_params["num_classes"] == 11:
+        seg_net = SPVCNN(
+            num_classes=19,
+            cr=model_params["cr"],
+            pres=model_params["res"],
+            vres=model_params["res"]).to(dev)
+        seg_net.load_state_dict(torch.load(model_params["seg_path"]))
+    else: # RELLIS
+        seg_net = SPVCNN(
+            num_classes=model_params["num_classes"],
+            cr=model_params["cr"],
+            pres=model_params["res"],
+            vres=model_params["res"]).to(dev)
+        seg_net.load_state_dict(torch.load(model_params["seg_path"])['model'])
 
     prop_net = TransformWorldStatic(torch.tensor(model_params["voxel_sizes"]).to(dev))
 
