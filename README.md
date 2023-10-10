@@ -117,3 +117,37 @@ Parameters can be set in the yaml config file, and it can be found in EndtoEnd/C
 Weights for SPVNAS segmentation network and convbki layer are located in EndtoEnd/weights, currently the weights are trained on [Rellis3D dataset](https://github.com/unmannedlab/RELLIS-3D). If you have other pretrained weights, you should store them here and change the seg_path and model_path in the config file accordingly. 
 
 
+## Acknowledgement
+We utilize data and code from: 
+- [1] [SemanticKITTI](http://www.semantic-kitti.org/)
+- [2] [RELLIS-3D](https://arxiv.org/abs/2011.12954)
+- [3] [SPVNAS](https://github.com/mit-han-lab/spvnas)
+- [4] [LIO-SAM](https://github.com/YJZLuckyBoy/liorf)
+- [5] [Semantic MapNet](https://github.com/vincentcartillier/Semantic-MapNet)
+
+## Reference
+If you find our work useful in your research work, consider citing [our paper](https://arxiv.org/abs/2209.10663)
+```
+@ARTICLE{wilson2022convolutional,
+  title={Convolutional Bayesian Kernel Inference for 3D Semantic Mapping},
+  author={Wilson, Joey and Fu, Yuewei and Zhang, Arthur and Song, Jingyu and Capodieci, Andrew and Jayakumar, Paramsothy and Barton, Kira and Ghaffari, Maani},
+  journal={arXiv preprint arXiv:2209.10663},
+  year={2022}
+}
+```
+Bayesian Spatial Kernel Smoothing for Scalable Dense Semantic Mapping ([PDF](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8954837))
+```
+@ARTICLE{gan2019bayesian,
+author={L. {Gan} and R. {Zhang} and J. W. {Grizzle} and R. M. {Eustice} and M. {Ghaffari}},
+journal={IEEE Robotics and Automation Letters},
+title={Bayesian Spatial Kernel Smoothing for Scalable Dense Semantic Mapping},
+year={2020},
+volume={5},
+number={2},
+pages={790-797},
+keywords={Mapping;semantic scene understanding;range sensing;RGB-D perception},
+doi={10.1109/LRA.2020.2965390},
+ISSN={2377-3774},
+month={April},}
+
+```
