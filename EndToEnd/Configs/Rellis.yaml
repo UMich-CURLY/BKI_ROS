@@ -18,10 +18,10 @@ res: 0.05
 cr: 0.5
 
 # Segmentation weights
-seg_path: "/home/tigeriv/Code/NuScenesConvBKI/spvnas/runs/rellis/checkpoints/max-iou-test.pt"
+seg_path: "./weights/Rellis/max-iou-test.pt"
 
 # ConvBKI weights
-model_path: "/home/tigeriv/Code/NuScenesConvBKI/Baselines/Models/Weights/ConvBKIRellis/Epoch1.pt"
+model_path: "./weights/Rellis/Epoch1.pt"
 
 # rviz color
 colors:
