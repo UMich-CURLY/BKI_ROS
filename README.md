@@ -7,7 +7,7 @@ explore the code from [here](https://github.com/UMich-CURLY/NeuralBKI).
 
 In this repository and subsequent paper, we further accelerate ConvBKI and test
 on more challenging test cases with perceptually difficult scenarios including
-real-world military vehicles. An example of these test is playing in the video below.
+real-world military vehicles. An example from the real-world testing is playing below.
 
 ![Alt Text](./video.gif)
 
