@@ -69,7 +69,7 @@ class lidar_poses_subscriber:
             start_t = time.time()
             self.e2e_net(input_data)
             end_t = time.time()
-            print("Inference completed in %.2f seconds" % (end_t - start_t))
+            print("Inference completed in %.2f seconds wall time." % (end_t - start_t))
 
             if self.publish:
                 self.next_map = publish_local_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, self.next_map, self.e2e_net.propagation_net.translation)

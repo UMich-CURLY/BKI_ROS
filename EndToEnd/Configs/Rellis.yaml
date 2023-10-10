@@ -1,16 +1,16 @@
 # ROS bag Topics
 pc_topic: '/map_pointcloud'
 pose_topic: '/map_pose'
-publish: False
+publish: True
 
 
 num_classes: 15
 
 # Conv BKI
-grid_size: [300, 300, 50]
-min_bound: [-30.0, -30.0, -4]
-max_bound: [30.0, 30.0, 6]
-voxel_sizes: [0.2, 0.2, 0.2]
+grid_size: [800, 800, 84]
+min_bound: [-40.0, -40.0, -4.2]
+max_bound: [40.0, 40.0, 4.2]
+voxel_sizes: [0.1, 0.1, 0.095]
 f: 5
 
 # Segmentation Net
@@ -18,10 +18,10 @@ res: 0.05
 cr: 0.5
 
 # Segmentation weights
-seg_path: "./weights/Rellis/max-iou-test.pt"
+seg_path: "/home/tigeriv/Code/NuScenesConvBKI/spvnas/runs/rellis/checkpoints/max-iou-test.pt"
 
 # ConvBKI weights
-model_path: "./weights/Rellis/Epoch1.pt"
+model_path: "/home/tigeriv/Code/NuScenesConvBKI/Baselines/Models/Weights/ConvBKIRellis/Epoch1.pt"
 
 # rviz color
 colors:
