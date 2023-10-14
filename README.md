@@ -37,8 +37,43 @@ the perceptually challenging data due to proprietary restrictions. However, all 
 used in the process is made public along with samples on open source data sets
 which we create in the notebook CreateBag.ipynb. 
 
+## Mapping with rosbag
+
+#### Run mapping
+
+You can run the mapping module which will create a ros publisher that publish the map and can be visualized on rviz.
+
+1. Run ros_node.py:
+```
+cd ~/BKI_ROS/EndToEnd
+python ros_node.py
+```
+2. Play processed rosbag:
+```
+rosbag play your-bag.bag
+```
+
+#### YAML Parameters
+
+Parameters can be set in the yaml config file, and it can be found in EndtoEnd/Configs
+
+* pc_topic - the name of the pointcloud topic to subscribe to
+* pose_topic - the name of the pose topic to subscribe to
+* num_classes - number of semantic classes
+
+* grid_size, min_bound, max_bound, voxel_sizes - parameters for convbki layer
+* f - convbki layer kernel size
+* res, cr - parameters for SPVNAS segmentation net
+* seg_path - saved weights for SPVNAS segmentation net
+* model_path - saved weights for convbki layer
+
+#### Model Weights
+
+Weights for SPVNAS segmentation network and convbki layer are located in EndtoEnd/weights, currently the weights are trained on [Rellis3D dataset](https://github.com/unmannedlab/RELLIS-3D) for off-road driving and Semantic KITTI [1] for on-road driving. If you have other pretrained weights, you should store them here and change the seg_path and model_path in the config file accordingly. 
 
 ## Preprocess Poses
+We are unable to release ROS bags for the military off-road driving to proprietary reasons. If you want to create ROS bags for your own data, below is the process we used to test on our custom data.
+
 We use LIO-SAM to preprocess poses - https://github.com/TixiaoShan/LIO-SAM
 
   
@@ -81,41 +116,6 @@ rosservice call /liorf/save_map "{}"
 **Before creating rosbag** change line 392 in ~/catkin_ws/src/liorf/src/mapOptimization.cpp to bag.open("/your/directory/lidarPoses.bag", rosbag::bagmode::Write);
  
 For a more detailed setup guide to LIO-SAM, please see https://github.com/TixiaoShan/LIO-SAM and https://github.com/YJZLuckyBoy/liorf
-
-## Mapping with rosbag
-
-#### Run mapping
-
-You can run the mapping module which will create a ros publisher that publish the map and can be visualized on rviz.
-
-1. Run ros_node.py:
-```
-cd ~/BKI_ROS/EndToEnd
-python ros_node.py
-```
-2. Play processed rosbag:
-```
-rosbag play your-bag.bag
-```
-
-#### YAML Parameters
-
-Parameters can be set in the yaml config file, and it can be found in EndtoEnd/Configs
-
-* pc_topic - the name of the pointcloud topic to subscribe to
-* pose_topic - the name of the pose topic to subscribe to
-* num_classes - number of semantic classes
-
-* grid_size, min_bound, max_bound, voxel_sizes - parameters for convbki layer
-* f - convbki layer kernel size
-* res, cr - parameters for SPVNAS segmentation net
-* seg_path - saved weights for SPVNAS segmentation net
-* model_path - saved weights for convbki layer
-
-#### Model Weights
-
-Weights for SPVNAS segmentation network and convbki layer are located in EndtoEnd/weights, currently the weights are trained on [Rellis3D dataset](https://github.com/unmannedlab/RELLIS-3D). If you have other pretrained weights, you should store them here and change the seg_path and model_path in the config file accordingly. 
-
 
 ## Acknowledgement
 We utilize data and code from: 
