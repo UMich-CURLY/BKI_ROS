@@ -4,9 +4,10 @@ from ConvBKI.ConvBKI import *
 from Propagation.mapping_utils import *
 from BKINet import *
 
-from geometry_msgs.msg import Point32
+from geometry_msgs.msg import Point
 from std_msgs.msg import ColorRGBA
-import rospy
+import rclpy
+from rclpy.node import Node
 from visualization_msgs.msg import MarkerArray, Marker
 
 
@@ -21,7 +22,7 @@ def load_model(model_params, dev):
             pres=model_params["res"],
             vres=model_params["res"]).to(dev)
         seg_net.load_state_dict(torch.load(model_params["seg_path"]))
-    else: # RELLIS
+    else:  # RELLIS
         seg_net = SPVCNN(
             num_classes=model_params["num_classes"],
             cr=model_params["cr"],
@@ -53,13 +54,13 @@ def publish_local_map(labeled_grid, centroids, voxel_dims, colors, next_map, tra
     marker.header.frame_id = "map"
     marker.type = Marker.CUBE_LIST
     marker.action = Marker.ADD
-    marker.lifetime.secs = 0
-    marker.header.stamp = rospy.Time.now()
+    marker.lifetime = rclpy.time.Duration().to_msg()  # ROS 2 way of handling lifetime
+    marker.header.stamp = rclpy.time.Time().to_msg()  # ROS 2 time handling
 
     marker.pose.orientation.x = 0.0
     marker.pose.orientation.y = 0.0
     marker.pose.orientation.z = 0.0
-    marker.pose.orientation.w = 1
+    marker.pose.orientation.w = 1.0
 
     marker.scale.x = voxel_dims[0]
     marker.scale.y = voxel_dims[1]
@@ -91,19 +92,28 @@ def publish_local_map(labeled_grid, centroids, voxel_dims, colors, next_map, tra
 
     for i in range(semantic_labels.shape[0]):
         pred = semantic_labels.squeeze()[i]
-        point = Point32()
+        # point = Point32()
+        point = Point()
         color = ColorRGBA()
-        point.x = centroids[i, 0]
-        point.y = centroids[i, 1]
-        point.z = centroids[i, 2]
-        color.r, color.g, color.b = colors[pred]
-        color.r = color.r / 255.
-        color.g = color.g / 255.
-        color.b = color.b / 255.
+        point.x = float(centroids[i, 0])
+        point.y = float(centroids[i, 1])
+        point.z = float(centroids[i, 2])
+        # color.r, color.g, color.b = colors[pred]
+        # color.r = color.r / 255.
+        # color.g = color.g / 255.
+        # color.b = color.b / 255.
+        # Convert colors to float and normalize to [0, 1] range
+        color.r = float(colors[pred][0]) / 255.0
+        color.g = float(colors[pred][1]) / 255.0
+        color.b = float(colors[pred][2]) / 255.0
 
         color.a = 1.0
         marker.points.append(point)
         marker.colors.append(color)
+        # print(point, color)
+
+    # print("marker", marker)
+    # print(f"Points: {len(marker.points)}, Colors: {len(marker.colors)}")
 
     next_map.markers.append(marker)
     return next_map
@@ -118,13 +128,13 @@ def publish_var_map(labeled_grid, centroids, voxel_dims, colors, var_map, transl
     marker.header.frame_id = "map"
     marker.type = Marker.CUBE_LIST
     marker.action = Marker.ADD
-    marker.lifetime.secs = 0
-    marker.header.stamp = rospy.Time.now()
+    marker.lifetime = rclpy.time.Duration().to_msg()  # ROS 2 duration handling
+    marker.header.stamp = rclpy.time.Time().to_msg()  # ROS 2 time handling
 
     marker.pose.orientation.x = 0.0
     marker.pose.orientation.y = 0.0
     marker.pose.orientation.z = 0.0
-    marker.pose.orientation.w = 1
+    marker.pose.orientation.w = 1.0
 
     marker.scale.x = voxel_dims[0]
     marker.scale.y = voxel_dims[1]
@@ -152,27 +162,27 @@ def publish_var_map(labeled_grid, centroids, voxel_dims, colors, var_map, transl
     keep_mask = max_labels != ignore_label
     point_vars = point_vars[keep_mask]
     semantic_labels = semantic_labels[keep_mask]
-    # print(np.mean(sigmoid(point_vars)), np.min(sigmoid(point_vars)), np.max(sigmoid(point_vars)))
     centroids = centroids[keep_mask, :]
     if centroids.shape[0] <= 1:
         return var_map
 
     for i in range(semantic_labels.shape[0]):
         var = point_vars[i]
-        point = Point32()
+        # point = Point32()
+        point = Point()
         color = ColorRGBA()
         if var >= max_var:
-            color.r = 1.0
-            color.g = 0.0
-            color.b = 0
+            color.r = float(1.0)
+            color.g = float(0.0)
+            color.b = float(0)
         else:
-            color.r = var/max_var # sigmoid(var)
-            color.g = 0.7 * (1 - var/max_var) # 0.6 * (1 - sigmoid(var))
-            color.b = 1 - var/max_var # 1 - sigmoid(var)
+            color.r = float(var / max_var)
+            color.g = float(0.7 * (1 - var / max_var))
+            color.b = float(1 - var / max_var)
 
-        point.x = centroids[i, 0]
-        point.y = centroids[i, 1]
-        point.z = centroids[i, 2]
+        point.x = float(centroids[i, 0])
+        point.y = float(centroids[i, 1])
+        point.z = float(centroids[i, 2])
 
         color.a = 1.0
         marker.points.append(point)

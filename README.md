@@ -1,4 +1,5 @@
 # Welcome!
+
 Thank you for your interest in Convolutional Bayesian Kernel Inference (ConvBKI).
 ConvBKI is an optimized semantic mapping algorithm which combines the best of 
 probabilistic mapping and learning-based mapping. ConvBKI was previously presented
@@ -12,24 +13,20 @@ real-world military vehicles. An example from the real-world testing is playing 
 ![Alt Text](./video.gif)
 
 ConvBKI runs as an end-to-end network which you can test using this repository! To test ConvBKI,
-clone the repository and download pre-processed ROS bags from the following links:
+clone the repository and have your pre-processed ROS2 bags ready.
 
-[KITTI](https://curly-dataset-public.s3.us-east-2.amazonaws.com/Joey/ConvBKI/Kitti/kitti.bag)
-
-[RELLIS-3D](https://curly-dataset-public.s3.us-east-2.amazonaws.com/Joey/ConvBKI/Rellis/rellis.bag)
-
-Next, simply navigate to the EndToEnd directory and run ros_node.py. Once the 
-network is up and running as a ROS node, begin playing the ROS bag. Note that you will need
-to ensure there is a ROS core, and open RVIZ if you want to visualize the results.
+Next, simply navigate to the EndToEnd directory and run ros2_node.py. Once the 
+network is up and running as a ROS2 node, begin playing the ROS2 bag. Note that you will need
+to open RVIZ2 if you want to visualize the results.
 We use SPVCNN as the backbone, which you can find installation instructions on [here](https://github.com/mit-han-lab/spvnas).
-As an alternative, we provide a configuration file to create a conda environment, tested on Ubuntu 20.
+As an alternative, we provide a configuration file to create a conda environment, tested on Ubuntu 22.
 
-The bottleneck of the ROS node is the visualization, since each map contains hundreds
+The bottleneck of the ROS2 node is the visualization, since each map contains hundreds
 of thousand of voxels. We decided not to optimize this, since the most likely use case is to
-send the semantic and variance map as a custom ROS message. To run without visualization,
+send the semantic and variance map as a custom ROS2 message. To run without visualization,
 simply set "Publish" in the yaml file to False. If running with "Publish" as True,
 we recommend playing the data at a slower rate with the -r <rate> setting to a value such as 0.1
-so RVIZ can keep up with the data. 
+so RVIZ2 can keep up with the data. 
 
 For more information, please see the below sections on how we preprocessed poses,
 and more information on parameters. Unfortunately, we are unable to publish 
@@ -37,20 +34,63 @@ the perceptually challenging data due to proprietary restrictions. However, all 
 used in the process is made public along with samples on open source data sets
 which we create in the notebook CreateBag.ipynb. 
 
-## Mapping with rosbag
+### Note
+This branch provides a ROS2 wrapper (ROS2 Humble) for ConvBKI, whereas the main branch supports ROS1. The primary intention of this work was to have ROS2 wrapper for the 3D Mapping, though we do provide resources how localization can be supported with this wrapper.
+
+## Install
+
+### Localization (for pre-processing the poses)
+You can ignore the Localization instructions if you already have the pre-processed pose data in a ROS2 bag file.
+
+See LIO-SAM documentation for software and hardware dependency information.
+
+- If using ROS1 (in which case you'll likely use ros1bridge to talk to ros2_node), use the following commands to download and compile the package.
+
+```
+git clone -b ros2 https://github.com/UMich-CURLY/BKI_ROS.git
+mv ~/BKI_ROS/lio-sam/liorf ~/catkin_ws/src
+cd ~/catkin_ws
+catkin_make
+```
+
+- If using ROS2, use the ros2 branch of- https://github.com/TixiaoShan/LIO-SAM
+
+### Mapping
+
+- Option 1: We provide an environment.yml which you can use to create a conda environment. It has all the dependencies from the working environment. But NOT RECOMMENDED since it always caused dependency conflicts (But just for reference we're providing it)
+```
+git clone -b ros2 https://github.com/UMich-CURLY/BKI_ROS.git
+cd ~/BKI_ROS/EndToEnd/backup_env_yml
+conda env create -f environment.yml
+conda activate bkiros2
+```
+
+- Option 2: RECOMMENDED (tested on Ubuntu 22.04)
+```
+git clone -b ros2 https://github.com/UMich-CURLY/BKI_ROS.git
+cd ~/BKI_ROS/EndToEnd
+conda env create -f environment.yml
+conda activate bkiros2
+conda install nvidia/label/cuda-11.8.0::cuda-toolkit
+conda install pytorch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 pytorch-cuda=11.8 -c pytorch -c nvidia
+sudo apt-get install libsparsehash-dev
+pip install --upgrade git+https://github.com/mit-han-lab/torchsparse.git@v1.4.0
+```
+
+## Mapping with ros2 bag
 
 #### Run mapping
 
-You can run the mapping module which will create a ros publisher that publish the map and can be visualized on rviz.
+You can run the mapping module which will create a ros2 publisher that publish the map and can be visualized on rviz2.
 
-1. Run ros_node.py:
+1. Run ros2_node.py:
 ```
 cd ~/BKI_ROS/EndToEnd
-python ros_node.py
+python ros2_node.py
 ```
-2. Play processed rosbag:
+2. Play processed ros2 bag:
 ```
-rosbag play your-bag.bag
+ros2 bag play your-bag.db3
 ```
 
 #### YAML Parameters
@@ -70,32 +110,8 @@ Parameters can be set in the yaml config file, and it can be found in EndtoEnd/C
 #### Model Weights
 
 Weights for SPVNAS segmentation network and convbki layer are located in EndtoEnd/weights, currently the weights are trained on [Rellis3D dataset](https://github.com/unmannedlab/RELLIS-3D) for off-road driving and Semantic KITTI [1] for on-road driving. If you have other pretrained weights, you should store them here and change the seg_path and model_path in the config file accordingly. 
-
-## Preprocess Poses
-We are unable to release ROS bags for the military off-road driving to proprietary reasons. If you want to create ROS bags for your own data, below is the process we used to test on our custom data.
-
-We use LIO-SAM to preprocess poses - https://github.com/TixiaoShan/LIO-SAM
-
   
-## Install
-See LIO-SAM documentation for software and hardware dependency information.
-Use the following commands to download and compile the package.
-
-```
-git clone https://github.com/UMich-CURLY/BKI_ROS.git
-mv ~/BKI_ROS/lio-sam/liorf ~/catkin_ws/src
-cd ~/catkin_ws
-catkin_make
-```
-
-We also provide an environment.yml which you can use to create a conda environment (This is only tested on Ubuntu 20)
-```
-cd ~/BKI_ROS/EndToEnd
-conda env create -f environment.yml
-conda activate bkiros
-```
-
-## Run the package
+## Run the package (with ROS1 only)
 
 1. Run the launch file:
 ```
