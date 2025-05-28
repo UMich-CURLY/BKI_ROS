@@ -36,16 +36,35 @@ def load_model(model_params, dev):
     max_bound = torch.tensor(model_params["max_bound"]).to(dev)
     num_classes = model_params["num_classes"]
     f = model_params["f"]
+    remap = model_params["remap"]
+    
+    free = model_params["free"]
+    if free:
+        num_classes += 1
 
     bki_layer = ConvBKI(grid_size, min_bound, max_bound,
                         filter_size=f, num_classes=num_classes, device=dev)
-    bki_layer.load_state_dict(torch.load(model_params["model_path"]))
+    # Free space kernel
+    if free:
+        with torch.no_grad():
+            bki_layer.ell_h[-1] = 0.05
+            bki_layer.ell_z[-1] = 0.05
+    
+    # Load weights if they already exist
+    if model_params["model_path"]:
+        weights = torch.load(model_params["model_path"])
+        ell_h = weights["ell_h"]
+        ell_z = weights["ell_z"]
+        N = ell_h.shape[0]
+        with torch.no_grad():
+            bki_layer.ell_h[:N] = ell_h
+            bki_layer.ell_z[:N] = ell_z
 
-    e2e_net = BKINet(seg_net, bki_layer, prop_net, grid_size, device=dev, num_classes=num_classes)
+    e2e_net = BKINet(seg_net, bki_layer, prop_net, grid_size, device=dev, num_classes=num_classes, remap=remap, free=free)
     return e2e_net
 
 
-def publish_local_map(labeled_grid, centroids, voxel_dims, colors, next_map, translation, ignore_label=0):
+def publish_local_map(labeled_grid, centroids, voxel_dims, colors, next_map, translation, ignore_label=None):
     next_map.markers.clear()
     marker = Marker()
     marker.id = 0
@@ -80,11 +99,12 @@ def publish_local_map(labeled_grid, centroids, voxel_dims, colors, next_map, tra
     semantic_labels = semantic_labels.reshape(-1, 1)
 
     # Filter out ignore label
-    keep_mask = semantic_labels.squeeze() != ignore_label
-    semantic_labels = semantic_labels[keep_mask, :]
-    centroids = centroids[keep_mask, :]
-    if centroids.shape[0] <= 1:
-        return next_map
+    if ignore_label:
+        keep_mask = semantic_labels.squeeze() != ignore_label
+        semantic_labels = semantic_labels[keep_mask, :]
+        centroids = centroids[keep_mask, :]
+        if centroids.shape[0] <= 1:
+            return next_map
 
     # Offset to global coords
     centroids = centroids + translation.view(1, -1).detach().cpu().numpy()
@@ -109,7 +129,7 @@ def publish_local_map(labeled_grid, centroids, voxel_dims, colors, next_map, tra
     return next_map
 
 
-def publish_var_map(labeled_grid, centroids, voxel_dims, colors, var_map, translation, ignore_label=0,
+def publish_var_map(labeled_grid, centroids, voxel_dims, colors, var_map, translation, ignore_label=None,
                     min_var=0, mid_var=0.25, max_var=0.25, color_max=255):
     var_map.markers.clear()
     marker = Marker()
@@ -149,13 +169,14 @@ def publish_var_map(labeled_grid, centroids, voxel_dims, colors, var_map, transl
     point_vars = point_consts * (1 - point_consts) / (1 + point_sums)
 
     # Filter out ignore label
-    keep_mask = max_labels != ignore_label
-    point_vars = point_vars[keep_mask]
-    semantic_labels = semantic_labels[keep_mask]
-    # print(np.mean(sigmoid(point_vars)), np.min(sigmoid(point_vars)), np.max(sigmoid(point_vars)))
-    centroids = centroids[keep_mask, :]
-    if centroids.shape[0] <= 1:
-        return var_map
+    if ignore_label:
+        keep_mask = max_labels != ignore_label
+        point_vars = point_vars[keep_mask]
+        semantic_labels = semantic_labels[keep_mask]
+        # print(np.mean(sigmoid(point_vars)), np.min(sigmoid(point_vars)), np.max(sigmoid(point_vars)))
+        centroids = centroids[keep_mask, :]
+        if centroids.shape[0] <= 1:
+            return var_map
 
     for i in range(semantic_labels.shape[0]):
         var = point_vars[i]

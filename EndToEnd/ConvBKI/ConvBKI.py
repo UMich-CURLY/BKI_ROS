@@ -9,7 +9,7 @@ import torch.nn.functional as F
 class ConvBKI(torch.nn.Module):
     def __init__(self, grid_size, min_bound, max_bound, filter_size=3,
                  num_classes=21, prior=0.001, device="cpu", datatype=torch.float32,
-                max_dist=0.5):
+                max_dist=0.2):
         '''
         Input:
             grid_size: (x, y, z) int32 array, number of voxels

@@ -18,11 +18,30 @@ clone the repository and download pre-processed ROS bags from the following link
 
 [RELLIS-3D](https://curly-dataset-public.s3.us-east-2.amazonaws.com/Joey/ConvBKI/Rellis/rellis.bag)
 
-Next, simply navigate to the EndToEnd directory and run ros_node.py. Once the 
-network is up and running as a ROS node, begin playing the ROS bag. Note that you will need
-to ensure there is a ROS core, and open RVIZ if you want to visualize the results.
-We use SPVCNN as the backbone, which you can find installation instructions on [here](https://github.com/mit-han-lab/spvnas).
-As an alternative, we provide a configuration file to create a conda environment, tested on Ubuntu 20.
+## Installation
+ConvBKI has basic requirements since the network runs as a simple convolution layer, requiring primarily PyTorch and ROS (we use ROS noetic, however see this [pull request](https://github.com/UMich-CURLY/BKI_ROS/pull/3/commits/d3e01fecf778f14fa7752b7a3cd195d6e03e4372) for ROS 2). Most of the requirements come from our segmentation network SPVCNN, which we provide updated installation for below. 
+
+1. Install ROS (we use noetic)
+
+2. ```conda create -n ConvBKIRos python=3.8.10```
+
+3. ```conda activate ConvBKIRos```
+
+4. ```conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch```
+
+5. ```python -m pip install numpy==1.17.4```
+
+6. ```python -m pip install spconv-cu113==2.1.21```
+
+7. ```python -m pip install --upgrade git+https://github.com/mit-han-lab/torchsparse.git@v1.4.0```
+
+8. ```python -m pip install torch-scatter -f https://data.pyg.org/whl/torch-2.1.2+${CUDA}.html```
+
+9. ```python -m pip install pyyaml```
+
+10. ```python -m pip install rospkg```
+
+11. ```conda activate ConvBKIROS```
 
 The bottleneck of the ROS node is the visualization, since each map contains hundreds
 of thousand of voxels. We decided not to optimize this, since the most likely use case is to

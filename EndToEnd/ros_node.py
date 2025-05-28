@@ -16,7 +16,7 @@ import message_filters
 class lidar_poses_subscriber:
 
     def __init__(self, pc_topic, pose_topic, res, e2e_net, dev,
-                 dtype, voxel_sizes, color, publish=False):
+                 dtype, voxel_sizes, color, publish=False, free_label=None):
 
         print("Initializing the instance!")
 
@@ -28,6 +28,7 @@ class lidar_poses_subscriber:
         self.var_map = MarkerArray()
         self.frame_count = 0
         self.publish = publish
+        self.free_label = free_label
 
         self.pc_sub = message_filters.Subscriber(pc_topic, 
                                           PointCloud2)
@@ -72,16 +73,18 @@ class lidar_poses_subscriber:
             print("Inference completed in %.2f seconds wall time." % (end_t - start_t))
 
             if self.publish:
-                self.next_map = publish_local_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, self.next_map, self.e2e_net.propagation_net.translation)
+                self.next_map = publish_local_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, 
+                                                  self.next_map, self.e2e_net.propagation_net.translation, ignore_label=self.free_label)
                 self.map_pub.publish(self.next_map)
 
-                self.var_map = publish_var_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, self.var_map, self.e2e_net.propagation_net.translation)
+                self.var_map = publish_var_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, 
+                                               self.var_map, self.e2e_net.propagation_net.translation, ignore_label=self.free_label)
                 self.var_pub.publish(self.var_map)
 
 
   
 def main():
-    MODEL_CONFIG = "KITTI"
+    MODEL_CONFIG = "Rellis"
 
     # Model Parameters
     model_params_file = os.path.join(os.getcwd(), "Configs", MODEL_CONFIG + ".yaml")
@@ -96,9 +99,14 @@ def main():
 
     e2e_net = load_model(model_params, dev)
 
+    if model_params["free"]:
+        free_label = model_params["num_classes"]
+    else:
+        free_label = None
+
     # Subscribe 
     sub = lidar_poses_subscriber(model_params["pc_topic"], model_params["pose_topic"], model_params["res"], e2e_net, dev,
-                                 dtype, model_params["voxel_sizes"], model_params["colors"], publish=model_params["publish"])
+                                 dtype, model_params["voxel_sizes"], model_params["colors"], publish=model_params["publish"], free_label=free_label)
     rospy.init_node('listener', anonymous=True)
 
     rospy.spin()

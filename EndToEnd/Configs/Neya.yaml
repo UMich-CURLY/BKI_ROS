@@ -11,6 +11,8 @@ min_bound: [-30.0, -30.0, -4]
 max_bound: [30.0, 30.0, 6]
 voxel_sizes: [0.1, 0.1, 0.1]
 f: 5
+free: False
+remap: False
 
 # Segmentation Net
 res: 0.05
