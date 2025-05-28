@@ -43,12 +43,7 @@ ConvBKI has basic requirements since the network runs as a simple convolution la
 
 11. ```conda activate ConvBKIROS```
 
-The bottleneck of the ROS node is the visualization, since each map contains hundreds
-of thousand of voxels. We decided not to optimize this, since the most likely use case is to
-send the semantic and variance map as a custom ROS message. To run without visualization,
-simply set "Publish" in the yaml file to False. If running with "Publish" as True,
-we recommend playing the data at a slower rate with the -r <rate> setting to a value such as 0.1
-so RVIZ can keep up with the data. 
+The ROS node publishes variance and semantic labels, which can be visualized as a MarkerArray (slow), or point cloud (fast) by editing the config file.
 
 For more information, please see the below sections on how we preprocessed poses,
 and more information on parameters. Unfortunately, we are unable to publish 

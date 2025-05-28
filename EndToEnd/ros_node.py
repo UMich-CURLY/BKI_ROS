@@ -16,19 +16,22 @@ import message_filters
 class lidar_poses_subscriber:
 
     def __init__(self, pc_topic, pose_topic, res, e2e_net, dev,
-                 dtype, voxel_sizes, color, publish=False, free_label=None):
+                 dtype, voxel_sizes, color, publish=False, free_label=None, publish_points=False):
 
         print("Initializing the instance!")
 
         # initialize the subscriber node now.
         # here we deal with messages of type pointcloud 2 and poses2
         self.map_pub = rospy.Publisher('SemMap_global', MarkerArray, queue_size=10)
+        self.sem_pc_pub = rospy.Publisher('SemMap_PC', PointCloud2, queue_size=10)
         self.next_map = MarkerArray()
         self.var_pub = rospy.Publisher('VarMap_global', MarkerArray, queue_size=10)
+        self.var_pc_pub = rospy.Publisher('VarMap_PC', PointCloud2, queue_size=10)
         self.var_map = MarkerArray()
         self.frame_count = 0
         self.publish = publish
         self.free_label = free_label
+        self.publish_points = publish_points
 
         self.pc_sub = message_filters.Subscriber(pc_topic, 
                                           PointCloud2)
@@ -80,11 +83,17 @@ class lidar_poses_subscriber:
                 self.var_map = publish_var_map(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, 
                                                self.var_map, self.e2e_net.propagation_net.translation, ignore_label=self.free_label)
                 self.var_pub.publish(self.var_map)
-
+            elif self.publish_points:
+                self.sem_points = publish_semantic_points(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, 
+                                            None, self.e2e_net.propagation_net.translation, ignore_label=self.free_label)
+                self.sem_pc_pub.publish(self.sem_points)
+                self.var_points = publish_var_points(self.e2e_net.grid, self.e2e_net.convbki_net.centroids, self.voxel_sizes, self.color, 
+                                               None, self.e2e_net.propagation_net.translation, ignore_label=self.free_label)
+                self.var_pc_pub.publish(self.var_points)
 
   
 def main():
-    MODEL_CONFIG = "Rellis"
+    MODEL_CONFIG = "KITTI"
 
     # Model Parameters
     model_params_file = os.path.join(os.getcwd(), "Configs", MODEL_CONFIG + ".yaml")
@@ -106,7 +115,7 @@ def main():
 
     # Subscribe 
     sub = lidar_poses_subscriber(model_params["pc_topic"], model_params["pose_topic"], model_params["res"], e2e_net, dev,
-                                 dtype, model_params["voxel_sizes"], model_params["colors"], publish=model_params["publish"], free_label=free_label)
+                                 dtype, model_params["voxel_sizes"], model_params["colors"], publish=model_params["publish"], free_label=free_label, publish_points=model_params["publish_points"])
     rospy.init_node('listener', anonymous=True)
 
     rospy.spin()

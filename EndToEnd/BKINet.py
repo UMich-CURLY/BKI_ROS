@@ -105,8 +105,11 @@ class BKINet(torch.nn.Module):
             # Get free space
             free_samples, free_labels = self.add_free_space(transformed_lidar)
             # Combine
-            point_labels = torch.vstack((point_labels, free_labels))
             transformed_lidar = torch.vstack((transformed_lidar, free_samples))
+            # Add a column of zeroes if necessary 
+            if point_labels.shape[1] == free_labels.shape[1] - 1:
+                point_labels = torch.hstack((point_labels, torch.zeros(point_labels.shape[0], 1, device=point_labels.device)))
+            point_labels = torch.vstack((point_labels, free_labels))
 
         segmented_points = torch.concat((transformed_lidar[:, :3], point_labels), dim=1)
         self.grid = self.convbki_net(self.grid, segmented_points)

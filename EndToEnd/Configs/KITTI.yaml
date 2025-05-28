@@ -1,7 +1,8 @@
 # ROS bag Topics
 pc_topic: '/map_pointcloud'
 pose_topic: '/map_pose'
-publish: True
+publish: False # Publish as voxels (slow)
+publish_points: True # Publish as points (fast). Just make sure to set the style to Boxes and size to voxel size in RVIZ.
 
 
 num_classes: 11
